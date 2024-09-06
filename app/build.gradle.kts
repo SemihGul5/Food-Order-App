@@ -61,7 +61,7 @@ dependencies {
     implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
-
+    implementation("com.github.bumptech.glide:glide:4.13.2")
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.converter.gson)

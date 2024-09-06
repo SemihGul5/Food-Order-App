@@ -33,5 +33,9 @@
         android:id="@+id/productDetailPageFragment"
         android:name="com.abrebo.food_order_app.ui.fragment.ProductDetailPageFragment"
         android:label="fragment_product_detail"
-        tools:layout="@layout/fragment_product_detail" />
+        tools:layout="@layout/fragment_product_detail" >
+        <argument
+            android:name="food"
+            app:argType="com.abrebo.food_order_app.data.model.Foods" />
+    </fragment>
 </navigation>

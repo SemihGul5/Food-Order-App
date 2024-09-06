@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.abrebo.food_order_app.R
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ProfilePageFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
