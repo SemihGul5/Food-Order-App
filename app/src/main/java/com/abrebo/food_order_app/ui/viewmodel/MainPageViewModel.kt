@@ -26,5 +26,15 @@ class MainPageViewModel @Inject constructor(var repository: Repository) :ViewMod
         }
     }
 
+    fun search(word:String){
+        try {
+            CoroutineScope(Dispatchers.Main).launch {
+                foodList.value=repository.search(word)
+            }
+        }catch (e:Exception){
+            foodUpload()
+        }
+    }
+
 
 }

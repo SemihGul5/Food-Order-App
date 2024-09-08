@@ -4,13 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.abrebo.food_order_app.data.model.CartFood
 import com.abrebo.food_order_app.databinding.CartCardLayoutBinding
 import com.abrebo.food_order_app.databinding.FragmentCartPageBinding
+import com.abrebo.food_order_app.ui.viewmodel.CartPageViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 
-class CartAdapter(var mContext:Context,var foods:List<CartFood>):RecyclerView.Adapter<CartAdapter.CartHolder>() {
+class CartAdapter(var mContext:Context,var foods:List<CartFood>, var viewModel:CartPageViewModel):RecyclerView.Adapter<CartAdapter.CartHolder>() {
 
     inner class CartHolder(var binding: CartCardLayoutBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -36,6 +39,12 @@ class CartAdapter(var mContext:Context,var foods:List<CartFood>):RecyclerView.Ad
 
 
         binding.imageViewDeleteFoodFromCart.setOnClickListener {
+            Snackbar.make(it,"${food.yemek_adi} silinsin mi?",Snackbar.LENGTH_INDEFINITE)
+                .setAction("Evet") {
+                    viewModel.deleteFoodFromCart(food.sepet_yemek_id, "semih_gul")
+                    Toast.makeText(mContext,"${food.yemek_siparis_adet} adet ${food.yemek_adi} silindi",Toast.LENGTH_SHORT).show()
+                }
+                .show()
 
         }
 

@@ -22,6 +22,19 @@ class Datasource(var foodsDao: FoodsDao) {
             return@withContext foodsDao.getFoodInTheCart(kullaniciAdi).sepet_yemekler
         }
 
+    suspend fun deleteFoodFromCart(sepetYemekId:Int,kullaniciAdi: String){
+        foodsDao.deleteFoodFromCart(sepetYemekId, kullaniciAdi)
+    }
+
+    suspend fun search(word:String): List<Foods> = withContext(Dispatchers.IO){
+        val searchList= foodsDao.foodUpload().yemekler.filter {
+            it.yemek_adi
+                .lowercase()
+                .contains(word.lowercase())
+        }
+        return@withContext searchList
+    }
+
 
 
 

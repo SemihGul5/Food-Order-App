@@ -21,8 +21,25 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
 
     fun getFoodInTheCart(){
         CoroutineScope(Dispatchers.Main).launch {
-            cartFoodList.value=repository.getFoodInTheCart("semih_gul")
+            try {
+                cartFoodList.value=repository.getFoodInTheCart("semih_gul")
+            }catch (e:Exception){
+                cartFoodList.value= listOf()
+            }
+
         }
+    }
+    fun deleteFoodFromCart(sepetYemekId:Int,kullaniciAdi: String){
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                repository.deleteFoodFromCart(sepetYemekId, kullaniciAdi)
+                getFoodInTheCart()
+            }catch (e:Exception){
+                cartFoodList.value= listOf()
+            }
+
+        }
+
     }
 
 

@@ -28,5 +28,10 @@ interface FoodsDao {
     @FormUrlEncoded
     suspend fun getFoodInTheCart(@Field("kullanici_adi") kullaniciAdi: String):CartFoodResponse
 
+    @POST("yemekler/sepettenYemekSil.php")
+    @FormUrlEncoded
+    suspend fun deleteFoodFromCart(@Field("sepet_yemek_id") sepetYemekId:Int,
+                                   @Field("kullanici_adi") kullaniciAdi: String):CRUDResponse
+
 
 }
