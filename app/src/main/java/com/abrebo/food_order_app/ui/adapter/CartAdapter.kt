@@ -41,7 +41,8 @@ class CartAdapter(var mContext:Context,var foods:List<CartFood>, var viewModel:C
         binding.imageViewDeleteFoodFromCart.setOnClickListener {
             Snackbar.make(it,"${food.yemek_adi} silinsin mi?",Snackbar.LENGTH_INDEFINITE)
                 .setAction("Evet") {
-                    viewModel.deleteFoodFromCart(food.sepet_yemek_id, "semih_gul")
+
+                    viewModel.deleteFoodFromCart(food.yemek_adi, "semih_gul")
                     Toast.makeText(mContext,"${food.yemek_siparis_adet} adet ${food.yemek_adi} silindi",Toast.LENGTH_SHORT).show()
                 }
                 .show()

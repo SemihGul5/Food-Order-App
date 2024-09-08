@@ -52,7 +52,7 @@ class MainPageFragment : Fragment() {
 
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        if(query!=null){
+                        if(!query.isNullOrEmpty()){
                             viewModel.search(query)
                         }else{
                             viewModel.foodUpload()
@@ -61,7 +61,7 @@ class MainPageFragment : Fragment() {
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        if(newText!=null){
+                        if(!newText.isNullOrEmpty()){
                             viewModel.search(newText)
                         }else{
                             viewModel.foodUpload()

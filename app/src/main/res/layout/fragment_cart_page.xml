@@ -17,6 +17,7 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        app:menu="@menu/cart_page_menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -111,7 +112,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/imageViewBackToMainPage"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"

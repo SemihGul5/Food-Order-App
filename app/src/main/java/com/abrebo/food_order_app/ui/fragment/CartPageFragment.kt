@@ -12,6 +12,7 @@ import com.abrebo.food_order_app.data.model.CartFood
 import com.abrebo.food_order_app.databinding.FragmentCartPageBinding
 import com.abrebo.food_order_app.ui.adapter.CartAdapter
 import com.abrebo.food_order_app.ui.viewmodel.CartPageViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -64,6 +65,16 @@ class CartPageFragment : Fragment() {
             val adapter = CartAdapter(requireContext(), finalFoodList,viewModel)
             binding.recyclerViewCart.adapter = adapter
         }
+
+        binding.materialToolbar3.setOnMenuItemClickListener { item->
+
+            if (item.itemId==R.id.clearCart){
+                viewModel.deleteAllFoodFromCart("semih_gul")
+            }
+            return@setOnMenuItemClickListener true
+        }
+
+
     }
 
 }
