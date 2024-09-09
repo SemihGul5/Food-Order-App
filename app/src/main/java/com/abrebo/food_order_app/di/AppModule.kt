@@ -1,12 +1,17 @@
 package com.abrebo.food_order_app.di
 
+import android.content.Context
+import androidx.room.Room
 import com.abrebo.food_order_app.data.datasource.Datasource
 import com.abrebo.food_order_app.data.repo.Repository
 import com.abrebo.food_order_app.retrofit.ApiUtils
 import com.abrebo.food_order_app.retrofit.FoodsDao
+import com.abrebo.food_order_app.room.Db
+import com.abrebo.food_order_app.room.RoomFoodsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -17,8 +22,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDatasource(foodsDao: FoodsDao):Datasource{
-        return Datasource(foodsDao)
+    fun provideDatasource(foodsDao: FoodsDao,roomFoodsDao: RoomFoodsDao):Datasource{
+        return Datasource(foodsDao,roomFoodsDao)
     }
 
     @Provides
@@ -31,6 +36,15 @@ class AppModule {
     @Singleton
     fun provideRepository(datasource: Datasource):Repository{
         return Repository(datasource)
+    }
+    @Provides
+    @Singleton
+    fun provideRoomFoodsDaoy(@ApplicationContext contex:Context):RoomFoodsDao{
+        val db=Room.databaseBuilder(contex, Db::class.java,"favoriler.sqlite")
+            .createFromAsset("favoriler.sqlite")
+            .build()
+
+        return db.getRoomFoodsDao()
     }
 
 

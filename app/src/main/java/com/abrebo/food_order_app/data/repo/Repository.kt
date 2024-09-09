@@ -13,8 +13,8 @@ class Repository(var datasource: Datasource) {
     suspend fun getFoodInTheCart(kullaniciAdi: String) : List<CartFood> = datasource.getFoodInTheCart(kullaniciAdi)
     suspend fun deleteFoodFromCart(sepetYemekId:Int,kullaniciAdi: String) = datasource.deleteFoodFromCart(sepetYemekId, kullaniciAdi)
     suspend fun search(word:String): List<Foods> = datasource.search(word)
-
-
-
+    suspend fun saveFoodFavorites(foods: Foods) = datasource.saveFoodFavorites(foods)
+    suspend fun getFoodsFromFavorites():List<Foods> = datasource.getFoodsFromFavorites()
+    suspend fun deleteFoodFromFavorites(foods: Foods) =datasource.deleteFoodFromFavorites(foods)
 
 }

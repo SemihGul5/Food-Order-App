@@ -5,24 +5,47 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.abrebo.food_order_app.R
+import com.abrebo.food_order_app.data.model.Foods
+import com.abrebo.food_order_app.databinding.FragmentFavoritesPageBinding
+import com.abrebo.food_order_app.ui.adapter.FoodsAdapter
+import com.abrebo.food_order_app.ui.viewmodel.MainPageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FavoritesPageFragment : Fragment() {
+    private lateinit var binding: FragmentFavoritesPageBinding
+    private lateinit var viewModel:MainPageViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val temp:MainPageViewModel by viewModels()
+        viewModel=temp
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+        binding=FragmentFavoritesPageBinding.inflate(inflater, container, false)
+
+
+        viewModel.favFoodList.observe(viewLifecycleOwner){
+            val adapter=FoodsAdapter(requireContext(),it,viewModel,it)
+            binding.recyclerViewFavorites.adapter=adapter
+        }
 
 
 
 
 
-        return inflater.inflate(R.layout.fragment_favorites_page, container, false)
+
+
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getFoodsFromFavorites()
     }
 
 }

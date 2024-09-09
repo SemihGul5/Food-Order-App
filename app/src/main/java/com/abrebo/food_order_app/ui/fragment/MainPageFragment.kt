@@ -2,11 +2,13 @@ package com.abrebo.food_order_app.ui.fragment
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import com.abrebo.food_order_app.R
@@ -36,9 +38,19 @@ class MainPageFragment : Fragment() {
 
         viewModel.foodList.observe(viewLifecycleOwner){
             foodList=it
-            val adapter=FoodsAdapter(requireContext(),it)
-            binding.recyclerView.adapter=adapter
+
+            viewModel.favFoodList.observe(viewLifecycleOwner){
+                val adapter=FoodsAdapter(requireContext(),foodList,viewModel,it)
+                binding.recyclerView.adapter=adapter
+            }
+
+
         }
+
+
+
+
+
 
         binding.materialToolbar.setOnMenuItemClickListener { item ->
             val id = item.itemId
@@ -78,6 +90,11 @@ class MainPageFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getFoodsFromFavorites()
     }
 
 }

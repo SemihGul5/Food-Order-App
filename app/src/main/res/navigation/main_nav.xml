@@ -37,5 +37,8 @@
         <argument
             android:name="food"
             app:argType="com.abrebo.food_order_app.data.model.Foods" />
+        <argument
+            android:name="isFavorite"
+            app:argType="boolean" />
     </fragment>
 </navigation>

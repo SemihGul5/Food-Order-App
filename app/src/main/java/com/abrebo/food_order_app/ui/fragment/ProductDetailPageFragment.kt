@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import com.abrebo.food_order_app.R
 import com.abrebo.food_order_app.data.model.Foods
 import com.abrebo.food_order_app.databinding.FragmentProductDetailBinding
 import com.abrebo.food_order_app.ui.viewmodel.ProductDetailPageViewModel
@@ -35,6 +36,7 @@ class ProductDetailPageFragment : Fragment() {
         val food=bundle.food
         val price=food.yemek_fiyat
         totalPrice=price*piece
+        handleFavorite(bundle.isFavorite)
 
 
         val uri="http://kasimadalan.pe.hu/yemekler/resimler/${food.yemek_resim_adi}"
@@ -75,6 +77,15 @@ class ProductDetailPageFragment : Fragment() {
 
         return binding.root
     }
+
+    private fun handleFavorite(favorite: Boolean) {
+        if (favorite){
+            binding.imageViewFavorite.setImageResource(R.drawable.baseline_favorite_white_30)
+        }else{
+            binding.imageViewFavorite.setImageResource(R.drawable.baseline_favorite_border_white_30)
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     private fun handlePiece(increasePiece:Boolean, food:Foods){
         if (increasePiece){
