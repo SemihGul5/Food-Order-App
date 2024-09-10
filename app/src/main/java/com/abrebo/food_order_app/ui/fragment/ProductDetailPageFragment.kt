@@ -1,11 +1,13 @@
 package com.abrebo.food_order_app.ui.fragment
 
+import android.animation.Animator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -86,8 +88,24 @@ class ProductDetailPageFragment : Fragment() {
         }
         binding.buttonAddToCart.setOnClickListener {
             viewModel.addToCart(food.yemek_adi,food.yemek_resim_adi,totalPrice,piece,"semih_gul")
+            handleAnim(true)
+            binding.animationViewAddCartLottie.playAnimation()
+            binding.animationViewAddCartLottie.addAnimatorListener(object: Animator.AnimatorListener{
+                override fun onAnimationStart(p0: Animator) {}
 
-            Toast.makeText(requireContext(),"${piece} adet ${food.yemek_adi} ürünü sepete eklendi.",Toast.LENGTH_SHORT).show()
+                override fun onAnimationEnd(p0: Animator) {
+                    Toast.makeText(requireContext(),"${piece} adet ${food.yemek_adi} ürünü sepete eklendi.",Toast.LENGTH_SHORT).show()
+                    handleAnim(false)
+                }
+
+                override fun onAnimationCancel(p0: Animator) {}
+
+                override fun onAnimationRepeat(p0: Animator) {}
+
+            })
+
+
+
         }
 
 
@@ -95,6 +113,18 @@ class ProductDetailPageFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun handleAnim(isAdd:Boolean){
+        if (isAdd){
+            binding.buttonAddToCart.visibility=View.GONE
+            binding.textViewTotalPrice.visibility=View.GONE
+            binding.animationViewAddCartLottie.visibility=View.VISIBLE
+        }else{
+            binding.animationViewAddCartLottie.visibility=View.GONE
+            binding.buttonAddToCart.visibility=View.VISIBLE
+            binding.textViewTotalPrice.visibility=View.VISIBLE
+        }
     }
 
     private fun handleFavorite(favorite: Boolean) {

@@ -69,8 +69,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:text="3 ₺"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewFoodPiece"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewFoodName" />
@@ -122,21 +124,41 @@
         android:text="27 ₺"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonAddToCart"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonAddToCartL"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonAddToCart" />
+        app:layout_constraintTop_toTopOf="@+id/buttonAddToCartL" />
 
-    <Button
-        android:id="@+id/buttonAddToCart"
+
+    <LinearLayout
+        android:id="@+id/buttonAddToCartL"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
-        android:text="Sepete Ekle"
-        android:drawableLeft="@drawable/baseline_add_shopping_cart_24"
-        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/buttonAddToCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Sepete Ekle"
+            android:drawableLeft="@drawable/baseline_add_shopping_cart_24"
+            android:textSize="16sp"
+            />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationViewAddCartLottie"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialToolbar4"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/add_cart"
+            />
+    </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
