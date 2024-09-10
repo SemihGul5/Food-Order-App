@@ -13,8 +13,5 @@
         android:id="@+id/favoritesPageFragment"
         android:icon="@drawable/baseline_favorite_24_menu"
         android:title="Favoriler" />
-    <item
-        android:id="@+id/profilePageFragment"
-        android:icon="@drawable/baseline_person_24_menu"
-        android:title="Profil" />
+
 </menu>

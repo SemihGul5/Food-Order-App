@@ -20,11 +20,6 @@
         android:label="fragment_cart_page"
         tools:layout="@layout/fragment_cart_page" />
     <fragment
-        android:id="@+id/profilePageFragment"
-        android:name="com.abrebo.food_order_app.ui.fragment.ProfilePageFragment"
-        android:label="fragment_profile_page"
-        tools:layout="@layout/fragment_profile_page" />
-    <fragment
         android:id="@+id/favoritesPageFragment"
         android:name="com.abrebo.food_order_app.ui.fragment.FavoritesPageFragment"
         android:label="fragment_favorites_page"

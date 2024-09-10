@@ -2,22 +2,20 @@ package com.abrebo.food_order_app.ui.fragment
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.RadioButton
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
-import com.abrebo.food_order_app.MainActivity
 import com.abrebo.food_order_app.R
 import com.abrebo.food_order_app.data.model.Foods
 import com.abrebo.food_order_app.databinding.FragmentMainPageBinding
 import com.abrebo.food_order_app.ui.adapter.FoodsAdapter
 import com.abrebo.food_order_app.ui.viewmodel.MainPageViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -84,9 +82,32 @@ class MainPageFragment : Fragment() {
                 })
 
                 return@setOnMenuItemClickListener true
-            }else if (id==R.id.address){
-                Snackbar.make(binding.materialToolbar,"Ev adresi",Snackbar.LENGTH_SHORT).show()
+            }else if (id == R.id.app_bar_sort) {
+                val dialog = BottomSheetDialog(requireContext())
+                val bottomSheet = layoutInflater.inflate(R.layout.main_page_bottom_sheet_dialog, null)
+                val radioHighPrice = bottomSheet.findViewById<RadioButton>(R.id.radioHighPrice)
+                val radioRecommended = bottomSheet.findViewById<RadioButton>(R.id.radioButtonRecommended)
+                val radioLowPrice = bottomSheet.findViewById<RadioButton>(R.id.radioButtonLowPrice)
+                viewModel.getBottomSheetSortCase(radioHighPrice,radioRecommended,radioLowPrice)
+
+                radioRecommended?.setOnClickListener {
+                    dialog.dismiss()
+                    viewModel.foodUpload()
+                }
+
+                radioLowPrice?.setOnClickListener {
+                    dialog.dismiss()
+                    viewModel.sortedByLowPrice()
+                }
+
+                radioHighPrice?.setOnClickListener {
+                    dialog.dismiss()
+                    viewModel.sortedByHighPrice()
+                }
+                dialog.setContentView(bottomSheet)
+                dialog.show()
             }
+
             false
         }
 
