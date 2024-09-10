@@ -30,8 +30,15 @@ class FavoritesPageFragment : Fragment() {
 
 
         viewModel.favFoodList.observe(viewLifecycleOwner){
-            val adapter=FoodsAdapter(requireContext(),it,viewModel,it)
-            binding.recyclerViewFavorites.adapter=adapter
+            if (it.isNullOrEmpty()){
+                handleVisible(true)
+            }else{
+                handleVisible(false)
+                val adapter=FoodsAdapter(requireContext(),it,viewModel,it)
+                binding.recyclerViewFavorites.adapter=adapter
+            }
+
+
         }
 
 
@@ -41,6 +48,15 @@ class FavoritesPageFragment : Fragment() {
 
 
         return binding.root
+    }
+    fun handleVisible(isNull:Boolean){
+        if (isNull){
+            binding.animationViewFavoriteLottie.visibility=View.VISIBLE
+            binding.recyclerViewFavorites.visibility=View.GONE
+        }else{
+            binding.animationViewFavoriteLottie.visibility=View.GONE
+            binding.recyclerViewFavorites.visibility=View.VISIBLE
+        }
     }
 
     override fun onResume() {

@@ -17,6 +17,8 @@ import com.abrebo.food_order_app.databinding.FragmentMainPageBinding
 import com.abrebo.food_order_app.databinding.ProductLayoutBinding
 import com.abrebo.food_order_app.ui.fragment.MainPageFragmentDirections
 import com.abrebo.food_order_app.ui.viewmodel.MainPageViewModel
+import com.abrebo.food_order_app.util.makeWhiteSnackbar
+import com.abrebo.food_order_app.util.switch
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 
@@ -55,34 +57,27 @@ class FoodsAdapter(var mContext:Context,
             binding.imageViewFavorite.setImageResource(R.drawable.baseline_favorite_border_24)
         }
 
-
         binding.productCard.setOnClickListener {
-            val gecis=MainPageFragmentDirections.actionMainPageFragmentToProductDetailPageFragment(food,isFavorite)
-            Navigation.findNavController(it).navigate(gecis)
-
+            goToCartFragment(it, food, isFavorite)
         }
+
         binding.imageViewFavorite.setOnClickListener {
             if (isFavorite) {
                 viewModel.deleteFoodFromFavorites(food)
-                Snackbar.make(it, "Favorilerden silindi", Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(Color.WHITE)
-                    .setTextColor(Color.BLACK)
-                    .show()
+                it.makeWhiteSnackbar("Favorilerden silindi")
             } else {
                 viewModel.saveFoodFavorites(food)
-                Snackbar.make(it, "Favorilere eklendi", Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(Color.WHITE)
-                    .setTextColor(Color.BLACK)
-                    .show()
+                it.makeWhiteSnackbar("Favorilere eklendi")
             }
         }
 
-
-
         binding.imageViewAddCart.setOnClickListener {
-            Toast.makeText(mContext,food.yemek_adi,Toast.LENGTH_SHORT).show()
-
+            goToCartFragment(it,food,isFavorite)
         }
 
+    }
+    fun goToCartFragment(it:View,food: Foods,isFavorite:Boolean){
+        val gecis=MainPageFragmentDirections.actionMainPageFragmentToProductDetailPageFragment(food,isFavorite)
+        Navigation.switch(it,gecis)
     }
 }

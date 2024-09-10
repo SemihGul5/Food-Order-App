@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
+import com.abrebo.food_order_app.MainActivity
 import com.abrebo.food_order_app.R
 import com.abrebo.food_order_app.data.model.Foods
 import com.abrebo.food_order_app.databinding.FragmentMainPageBinding

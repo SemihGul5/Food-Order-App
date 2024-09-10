@@ -8,10 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import com.abrebo.food_order_app.MainActivity
 import com.abrebo.food_order_app.R
 import com.abrebo.food_order_app.data.model.Foods
 import com.abrebo.food_order_app.databinding.FragmentProductDetailBinding
 import com.abrebo.food_order_app.ui.viewmodel.ProductDetailPageViewModel
+import com.abrebo.food_order_app.util.makeWhiteSnackbar
+import com.abrebo.food_order_app.util.switch
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,10 +25,12 @@ class ProductDetailPageFragment : Fragment() {
     private lateinit var viewModel:ProductDetailPageViewModel
     private var piece=1
     private var totalPrice=0
+    private var isFavorite=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val temp:ProductDetailPageViewModel by viewModels()
         viewModel=temp
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -36,6 +42,7 @@ class ProductDetailPageFragment : Fragment() {
         val food=bundle.food
         val price=food.yemek_fiyat
         totalPrice=price*piece
+        isFavorite=bundle.isFavorite
         handleFavorite(bundle.isFavorite)
 
 
@@ -61,13 +68,25 @@ class ProductDetailPageFragment : Fragment() {
         }
 
         binding.imageViewBack.setOnClickListener {
-
+            Navigation.switch(it,R.id.action_productDetailPageFragment_to_mainPageFragment)
         }
-        binding.imageViewFavorite.setOnClickListener {
 
+        binding.imageViewFavorite.setOnClickListener {
+            if (isFavorite){
+                viewModel.deleteFoodFromFavorites(food)
+                isFavorite=false
+                it.makeWhiteSnackbar("Favorilerden silindi")
+                binding.imageViewFavorite.setImageResource(R.drawable.baseline_favorite_border_white_30)
+            }else{
+                viewModel.saveFoodFavorites(food)
+                isFavorite=true
+                it.makeWhiteSnackbar("Favorilere eklendi")
+                binding.imageViewFavorite.setImageResource(R.drawable.baseline_favorite_white_30)
+            }
         }
         binding.buttonAddToCart.setOnClickListener {
             viewModel.addToCart(food.yemek_adi,food.yemek_resim_adi,totalPrice,piece,"semih_gul")
+
             Toast.makeText(requireContext(),"${piece} adet ${food.yemek_adi} ürünü sepete eklendi.",Toast.LENGTH_SHORT).show()
         }
 

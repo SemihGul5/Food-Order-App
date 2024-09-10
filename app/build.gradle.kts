@@ -69,4 +69,6 @@ dependencies {
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation ("com.airbnb.android:lottie:3.4.0")
+
 }

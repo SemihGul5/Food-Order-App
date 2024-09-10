@@ -8,6 +8,8 @@ import com.abrebo.food_order_app.retrofit.ApiUtils
 import com.abrebo.food_order_app.retrofit.FoodsDao
 import com.abrebo.food_order_app.room.Db
 import com.abrebo.food_order_app.room.RoomFoodsDao
+import com.abrebo.food_order_app.ui.viewmodel.MainPageViewModel
+import com.abrebo.food_order_app.ui.viewmodel.ProductDetailPageViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,6 +47,17 @@ class AppModule {
             .build()
 
         return db.getRoomFoodsDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductDetailPageViewModel(repository: Repository,mainPageViewModel: MainPageViewModel): ProductDetailPageViewModel{
+        return ProductDetailPageViewModel(repository,mainPageViewModel)
+    }
+    @Provides
+    @Singleton
+    fun provideProductMainPageViewModel(repository: Repository): MainPageViewModel{
+        return MainPageViewModel(repository)
     }
 
 

@@ -9,23 +9,27 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class CartPageViewModel @Inject constructor(var repository: Repository) :ViewModel() {
-
     var cartFoodList= MutableLiveData<List<CartFood>>()
+    var totalPrice=MutableLiveData<Int>()
 
     init {
         getFoodInTheCart()
+        calcTotalPrice()
     }
 
     fun getFoodInTheCart(){
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 cartFoodList.value=repository.getFoodInTheCart("semih_gul")
+                calcTotalPrice()
             }catch (e:Exception){
                 cartFoodList.value= listOf()
+                totalPrice.value=0
             }
 
         }
@@ -36,12 +40,14 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
                 cartFoodList.value?.forEach {
                     if (it.yemek_adi==yemekAdi){
                         repository.deleteFoodFromCart(it.sepet_yemek_id, kullaniciAdi)
+                        calcTotalPrice()
                     }
                 }
                 getFoodInTheCart()
 
             }catch (e:Exception){
                 cartFoodList.value= listOf()
+                totalPrice.value=0
             }
 
         }
@@ -55,9 +61,27 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
                 getFoodInTheCart()
             }catch (e:Exception){
                 cartFoodList.value= listOf()
+                totalPrice.value=0
             }
         }
     }
+    fun calcTotalPrice(){
+        var total=0
+        if (!cartFoodList.value.isNullOrEmpty()){
+            cartFoodList.value?.forEach {
+                total+=it.yemek_fiyat
+                totalPrice.value=total
+            }
+        }else{
+            totalPrice.value=0
+        }
+    }
+
+
+
+
+
+
 
 
 
