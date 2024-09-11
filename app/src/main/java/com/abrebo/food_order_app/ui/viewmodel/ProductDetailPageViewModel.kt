@@ -2,10 +2,8 @@ package com.abrebo.food_order_app.ui.viewmodel
 
 import android.animation.Animator
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
@@ -15,7 +13,6 @@ import com.abrebo.food_order_app.data.repo.Repository
 import com.abrebo.food_order_app.util.makeWhiteSnackbar
 import com.abrebo.food_order_app.util.switch
 import com.airbnb.lottie.LottieAnimationView
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,14 +26,21 @@ class ProductDetailPageViewModel @Inject constructor(var repository: Repository,
     var piece=MutableLiveData<Int>()
     var totalPrice=MutableLiveData<Int>()
     var food1=MutableLiveData<Foods>()
+    var handleFavorite=MutableLiveData<Boolean>()
+
     init {
         piece.value=1
         totalPrice.value= 0
+        handleFavorite.value=false
     }
 
     fun initFood(food:Foods){
         food1.value=food
+        piece.value=1
         totalPrice.value=food.yemek_fiyat
+    }
+    fun initFavorite(isFavorite:Boolean){
+        handleFavorite.value=isFavorite
     }
     fun addToCart(yemekAdi:String,yemekResimAdi:String,yemekFiyat:Int,yemekSiparisAdet:Int,kullaniciAdi:String){
         CoroutineScope(Dispatchers.Main).launch {
@@ -82,6 +86,20 @@ class ProductDetailPageViewModel @Inject constructor(var repository: Repository,
         }catch (e:Exception){
             piece.value=1
             totalPrice.value=food.yemek_fiyat
+        }
+    }
+
+    fun imageViewFavoriteClicked(food: Foods,it:View,imageViewFavorite:ImageView){
+        if (handleFavorite.value==true){
+            deleteFoodFromFavorites(food)
+            handleFavorite.value=false
+            it.makeWhiteSnackbar("Favorilerden silindi")
+            imageViewFavorite.setImageResource(R.drawable.baseline_favorite_border_white_30)
+        }else{
+            saveFoodFavorites(food)
+            handleFavorite.value=true
+            it.makeWhiteSnackbar("Favorilere eklendi")
+            imageViewFavorite.setImageResource(R.drawable.baseline_favorite_white_30)
         }
     }
 

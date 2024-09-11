@@ -27,7 +27,11 @@
         android:id="@+id/favoritesPageFragment"
         android:name="com.abrebo.food_order_app.ui.fragment.FavoritesPageFragment"
         android:label="fragment_favorites_page"
-        tools:layout="@layout/fragment_favorites_page" />
+        tools:layout="@layout/fragment_favorites_page" >
+        <action
+            android:id="@+id/action_favoritesPageFragment_to_productDetailPageFragment"
+            app:destination="@id/productDetailPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/productDetailPageFragment"
         android:name="com.abrebo.food_order_app.ui.fragment.ProductDetailPageFragment"
@@ -43,4 +47,5 @@
             android:id="@+id/action_productDetailPageFragment_to_mainPageFragment"
             app:destination="@id/mainPageFragment" />
     </fragment>
+    <fragment android:id="@+id/placeholder" />
 </navigation>

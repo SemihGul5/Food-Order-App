@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.abrebo.food_order_app.R
-import com.abrebo.food_order_app.data.model.Foods
 import com.abrebo.food_order_app.databinding.FragmentFavoritesPageBinding
 import com.abrebo.food_order_app.ui.adapter.FoodsAdapter
 import com.abrebo.food_order_app.ui.viewmodel.MainPageViewModel
@@ -35,7 +34,7 @@ class FavoritesPageFragment : Fragment() {
                 handleVisible(true)
             }else{
                 handleVisible(false)
-                val adapter=FoodsAdapter(requireContext(),it,viewModel,it)
+                val adapter=FoodsAdapter(requireContext(),it,viewModel,it,2)
                 binding.recyclerViewFavorites.adapter=adapter
             }
         }

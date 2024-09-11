@@ -2,36 +2,37 @@ package com.abrebo.food_order_app.ui.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.annotation.Nullable
-import androidx.fragment.app.FragmentActivity
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.abrebo.food_order_app.R
 import com.abrebo.food_order_app.data.model.Foods
-import com.abrebo.food_order_app.databinding.FragmentMainPageBinding
 import com.abrebo.food_order_app.databinding.ProductLayoutBinding
+import com.abrebo.food_order_app.ui.fragment.FavoritesPageFragmentDirections
 import com.abrebo.food_order_app.ui.fragment.MainPageFragmentDirections
 import com.abrebo.food_order_app.ui.viewmodel.MainPageViewModel
 import com.abrebo.food_order_app.util.makeWhiteSnackbar
 import com.abrebo.food_order_app.util.switch
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 
 class FoodsAdapter(var mContext:Context,
                    var foodsList: List<Foods>,
                    var viewModel:MainPageViewModel,
                    var favList:List<Foods>,
+                   var page:Int
                   ):RecyclerView.Adapter<FoodsAdapter.FoodsHolder>() {
 
     inner class FoodsHolder(var binding:ProductLayoutBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodsHolder {
-        val binding= ProductLayoutBinding.inflate(LayoutInflater.from(mContext), parent, false)
+        val binding: ProductLayoutBinding=DataBindingUtil
+            .inflate(LayoutInflater.from(mContext),
+            R.layout.product_layout,
+            parent,
+            false)
         return FoodsHolder(binding)
     }
 
@@ -43,11 +44,10 @@ class FoodsAdapter(var mContext:Context,
     override fun onBindViewHolder(holder: FoodsHolder, position: Int) {
         val food=foodsList.get(position)
         val binding=holder.binding
-
+        binding.food=food
         val uri="http://kasimadalan.pe.hu/yemekler/resimler/${food.yemek_resim_adi}"
         Glide.with(mContext).load(uri).into(binding.imageViewFood)
-        binding.textViewFoodName.text=food.yemek_adi
-        binding.textViewFoodPrice.text="${food.yemek_fiyat} ₺"
+
 
 
         val isFavorite = favList.any { it.yemek_adi == food.yemek_adi }
@@ -58,7 +58,7 @@ class FoodsAdapter(var mContext:Context,
         }
 
         binding.productCard.setOnClickListener {
-            goToCartFragment(it, food, isFavorite)
+            goToProductFragment(it, food, isFavorite)
         }
 
         binding.imageViewFavorite.setOnClickListener {
@@ -72,12 +72,18 @@ class FoodsAdapter(var mContext:Context,
         }
 
         binding.imageViewAddCart.setOnClickListener {
-            goToCartFragment(it,food,isFavorite)
+            goToProductFragment(it,food,isFavorite)
         }
 
     }
-    fun goToCartFragment(it:View,food: Foods,isFavorite:Boolean){
-        val gecis=MainPageFragmentDirections.actionMainPageFragmentToProductDetailPageFragment(food,isFavorite)
-        Navigation.switch(it,gecis)
+    fun goToProductFragment(it:View,food: Foods,isFavorite:Boolean){
+        if (page==1){
+            val gecis=MainPageFragmentDirections.actionMainPageFragmentToProductDetailPageFragment(food,isFavorite)
+            Navigation.switch(it,gecis)
+        }else if (page==2){
+            val gecis=FavoritesPageFragmentDirections.actionFavoritesPageFragmentToProductDetailPageFragment(food,isFavorite)
+            Navigation.switch(it,gecis)
+        }
+
     }
 }

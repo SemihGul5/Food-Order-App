@@ -13,7 +13,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.abrebo.food_order_app.R
-import com.abrebo.food_order_app.data.model.Foods
 import com.abrebo.food_order_app.databinding.FragmentMainPageBinding
 import com.abrebo.food_order_app.ui.adapter.FoodsAdapter
 import com.abrebo.food_order_app.ui.viewmodel.MainPageViewModel
@@ -39,7 +38,7 @@ class MainPageFragment : Fragment() {
 
         viewModel.foodList.observe(viewLifecycleOwner){foodList->
             viewModel.favFoodList.observe(viewLifecycleOwner){
-                val adapter=FoodsAdapter(requireContext(),foodList,viewModel,it)
+                val adapter=FoodsAdapter(requireContext(),foodList,viewModel,it,1)
                 binding.recyclerView.adapter=adapter
             }
         }

@@ -1,24 +1,16 @@
 package com.abrebo.food_order_app.ui.fragment
 
-import android.animation.Animator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
-import com.abrebo.food_order_app.MainActivity
 import com.abrebo.food_order_app.R
-import com.abrebo.food_order_app.data.model.Foods
 import com.abrebo.food_order_app.databinding.FragmentProductDetailBinding
 import com.abrebo.food_order_app.ui.viewmodel.ProductDetailPageViewModel
-import com.abrebo.food_order_app.util.makeWhiteSnackbar
-import com.abrebo.food_order_app.util.switch
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,10 +36,14 @@ class ProductDetailPageFragment : Fragment() {
         binding.food=bundle.food
         viewModel.initFood(bundle.food)
         isFavorite=bundle.isFavorite
-        handleFavorite(isFavorite)
+        viewModel.initFavorite(isFavorite)
+
 
         viewModel.handleAnim.observe(viewLifecycleOwner){
             handleAnim(it)
+        }
+        viewModel.handleFavorite.observe(viewLifecycleOwner){
+            handleFavorite(it)
         }
 
 
@@ -59,19 +55,6 @@ class ProductDetailPageFragment : Fragment() {
 
 
 
-        binding.imageViewFavorite.setOnClickListener {
-            if (isFavorite){
-                viewModel.deleteFoodFromFavorites(bundle.food)
-                isFavorite=false
-                it.makeWhiteSnackbar("Favorilerden silindi")
-                binding.imageViewFavorite.setImageResource(R.drawable.baseline_favorite_border_white_30)
-            }else{
-                viewModel.saveFoodFavorites(bundle.food)
-                isFavorite=true
-                it.makeWhiteSnackbar("Favorilere eklendi")
-                binding.imageViewFavorite.setImageResource(R.drawable.baseline_favorite_white_30)
-            }
-        }
 
 
 

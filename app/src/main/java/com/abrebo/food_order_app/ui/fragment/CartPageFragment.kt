@@ -1,6 +1,5 @@
 package com.abrebo.food_order_app.ui.fragment
 
-import android.animation.Animator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,15 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
-import com.abrebo.food_order_app.MainActivity
 import com.abrebo.food_order_app.R
-import com.abrebo.food_order_app.data.model.CartFood
 import com.abrebo.food_order_app.databinding.FragmentCartPageBinding
 import com.abrebo.food_order_app.ui.adapter.CartAdapter
 import com.abrebo.food_order_app.ui.viewmodel.CartPageViewModel
-import com.abrebo.food_order_app.util.switch
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

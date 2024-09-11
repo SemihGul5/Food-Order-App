@@ -2,23 +2,18 @@ package com.abrebo.food_order_app.ui.viewmodel
 
 import android.animation.Animator
 import android.view.View
-import android.widget.LinearLayout
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import com.abrebo.food_order_app.R
 import com.abrebo.food_order_app.data.model.CartFood
 import com.abrebo.food_order_app.data.repo.Repository
 import com.abrebo.food_order_app.util.switch
 import com.airbnb.lottie.LottieAnimationView
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
