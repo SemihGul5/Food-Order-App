@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.abrebo.food_order_app.MainActivity
@@ -25,8 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProductDetailPageFragment : Fragment() {
     private lateinit var binding: FragmentProductDetailBinding
     private lateinit var viewModel:ProductDetailPageViewModel
-    private var piece=1
-    private var totalPrice=0
     private var isFavorite=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,74 +37,40 @@ class ProductDetailPageFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding=FragmentProductDetailBinding.inflate(inflater, container, false)
-
+        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_product_detail, container, false)
+        binding.viewModel=viewModel
+        binding.lifecycleOwner=viewLifecycleOwner
         val bundle=ProductDetailPageFragmentArgs.fromBundle(requireArguments())
-        val food=bundle.food
-        val price=food.yemek_fiyat
-        totalPrice=price*piece
+        binding.food=bundle.food
+        viewModel.initFood(bundle.food)
         isFavorite=bundle.isFavorite
-        handleFavorite(bundle.isFavorite)
+        handleFavorite(isFavorite)
+
+        viewModel.handleAnim.observe(viewLifecycleOwner){
+            handleAnim(it)
+        }
 
 
-        val uri="http://kasimadalan.pe.hu/yemekler/resimler/${food.yemek_resim_adi}"
+        val uri="http://kasimadalan.pe.hu/yemekler/resimler/${bundle.food.yemek_resim_adi}"
         Glide.with(requireContext()).load(uri)
             .override(3000,2500)
             .into(binding.imageViewFood)
-        binding.textViewFoodName.text=food.yemek_adi
-        binding.textViewFoodPrice.text="${food.yemek_fiyat}₺"
-        binding.textViewFoodPiece.text= piece.toString()
-        binding.textViewTotalPrice.text="${totalPrice}₺"
 
 
-        binding.imageViewDecreasePiece.setOnClickListener {
-            if (piece<=1){
-                Toast.makeText(requireContext(),"Adet daha fazla azaltılamaz!",Toast.LENGTH_SHORT).show()
-            }else{
-                handlePiece(false,food)
-            }
-        }
-        binding.imageViewIncreasePiece.setOnClickListener {
-            handlePiece(true,food)
-        }
 
-        binding.imageViewBack.setOnClickListener {
-            Navigation.switch(it,R.id.action_productDetailPageFragment_to_mainPageFragment)
-        }
 
         binding.imageViewFavorite.setOnClickListener {
             if (isFavorite){
-                viewModel.deleteFoodFromFavorites(food)
+                viewModel.deleteFoodFromFavorites(bundle.food)
                 isFavorite=false
                 it.makeWhiteSnackbar("Favorilerden silindi")
                 binding.imageViewFavorite.setImageResource(R.drawable.baseline_favorite_border_white_30)
             }else{
-                viewModel.saveFoodFavorites(food)
+                viewModel.saveFoodFavorites(bundle.food)
                 isFavorite=true
                 it.makeWhiteSnackbar("Favorilere eklendi")
                 binding.imageViewFavorite.setImageResource(R.drawable.baseline_favorite_white_30)
             }
-        }
-        binding.buttonAddToCart.setOnClickListener {
-            viewModel.addToCart(food.yemek_adi,food.yemek_resim_adi,totalPrice,piece,"semih_gul")
-            handleAnim(true)
-            binding.animationViewAddCartLottie.playAnimation()
-            binding.animationViewAddCartLottie.addAnimatorListener(object: Animator.AnimatorListener{
-                override fun onAnimationStart(p0: Animator) {}
-
-                override fun onAnimationEnd(p0: Animator) {
-                    Toast.makeText(requireContext(),"${piece} adet ${food.yemek_adi} ürünü sepete eklendi.",Toast.LENGTH_SHORT).show()
-                    handleAnim(false)
-                }
-
-                override fun onAnimationCancel(p0: Animator) {}
-
-                override fun onAnimationRepeat(p0: Animator) {}
-
-            })
-
-
-
         }
 
 
@@ -135,16 +100,6 @@ class ProductDetailPageFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun handlePiece(increasePiece:Boolean, food:Foods){
-        if (increasePiece){
-            piece++
-        }else{
-            piece--
-        }
-        totalPrice=piece*food.yemek_fiyat
-        binding.textViewFoodPiece.text=piece.toString()
-        binding.textViewTotalPrice.text="${totalPrice}₺"
-    }
+
 
 }

@@ -18,7 +18,11 @@
         android:id="@+id/cartPageFragment"
         android:name="com.abrebo.food_order_app.ui.fragment.CartPageFragment"
         android:label="fragment_cart_page"
-        tools:layout="@layout/fragment_cart_page" />
+        tools:layout="@layout/fragment_cart_page" >
+        <action
+            android:id="@+id/action_cartPageFragment_to_mainPageFragment"
+            app:destination="@id/mainPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favoritesPageFragment"
         android:name="com.abrebo.food_order_app.ui.fragment.FavoritesPageFragment"

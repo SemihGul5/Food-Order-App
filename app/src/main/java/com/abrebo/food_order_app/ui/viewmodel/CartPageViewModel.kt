@@ -1,9 +1,18 @@
 package com.abrebo.food_order_app.ui.viewmodel
 
+import android.animation.Animator
+import android.view.View
+import android.widget.LinearLayout
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.RecyclerView
+import com.abrebo.food_order_app.R
 import com.abrebo.food_order_app.data.model.CartFood
 import com.abrebo.food_order_app.data.repo.Repository
+import com.abrebo.food_order_app.util.switch
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -16,6 +25,9 @@ import javax.inject.Inject
 class CartPageViewModel @Inject constructor(var repository: Repository) :ViewModel() {
     var cartFoodList= MutableLiveData<List<CartFood>>()
     var totalPrice=MutableLiveData<Int>()
+    var isCartEmpty = MutableLiveData<Boolean>()
+
+
 
     init {
         getFoodInTheCart()
@@ -26,10 +38,13 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 cartFoodList.value=repository.getFoodInTheCart("semih_gul")
+                processCartFoodList(cartFoodList.value!!)
                 calcTotalPrice()
+
             }catch (e:Exception){
                 cartFoodList.value= listOf()
                 totalPrice.value=0
+                isCartEmpty.value = true
             }
 
         }
@@ -48,6 +63,7 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
             }catch (e:Exception){
                 cartFoodList.value= listOf()
                 totalPrice.value=0
+                isCartEmpty.value=true
             }
 
         }
@@ -62,6 +78,7 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
             }catch (e:Exception){
                 cartFoodList.value= listOf()
                 totalPrice.value=0
+                isCartEmpty.value=true
             }
         }
     }
@@ -76,15 +93,52 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
             totalPrice.value=0
         }
     }
+    fun buttonCartConfirmClicked(animationViewCartLottie:LottieAnimationView){
+        isCartEmpty.value = true
+        animationViewCartLottie.loop(false)
+        animationViewCartLottie.maxWidth=200
+        animationViewCartLottie.maxHeight=200
+        animationViewCartLottie.setAnimation(R.raw.check_2)
+        animationViewCartLottie.playAnimation()
 
+        animationViewCartLottie.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
+                isCartEmpty.value = true
+                animationViewCartLottie.setAnimation(R.raw.food_order)
+                animationViewCartLottie.playAnimation()
+                animationViewCartLottie.loop(true)
+                deleteAllFoodFromCart("semih_gul")
+            }
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
+    }
 
+    fun processCartFoodList(foodList: List<CartFood>) {
+        isCartEmpty.value = false
+        val foodMap = mutableMapOf<String, CartFood>()
+        for (food in foodList) {
+            val currentFood = foodMap[food.yemek_adi]
+            if (currentFood != null) {
+                currentFood.yemek_siparis_adet += food.yemek_siparis_adet
+                currentFood.yemek_fiyat += food.yemek_fiyat
+            } else {
+                foodMap[food.yemek_adi] = CartFood(
+                    food.sepet_yemek_id,
+                    food.yemek_adi,
+                    food.yemek_resim_adi,
+                    food.yemek_fiyat,
+                    food.yemek_siparis_adet,
+                    "semih_gul"
+                )
+            }
+        }
+        cartFoodList.value = foodMap.values.toList()
+    }
 
-
-
-
-
-
-
-
+    fun backButtonClicked(it:View){
+        Navigation.switch(it,R.id.action_cartPageFragment_to_mainPageFragment)
+    }
 
 }

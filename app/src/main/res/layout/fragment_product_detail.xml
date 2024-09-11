@@ -1,164 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_page"
-    android:layout_marginBottom="100dp"
-    tools:context=".ui.fragment.ProductDetailPageFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbar2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Ürün Detay"
-        app:titleCentered="true"
-        app:titleTextColor="@color/white" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.abrebo.food_order_app.ui.viewmodel.ProductDetailPageViewModel" />
+        <variable
+            name="food"
+            type="com.abrebo.food_order_app.data.model.Foods" />
+        <variable
+            name="isFavorite"
+            type="Boolean" />
+    </data>
 
-    <ImageView
-        android:id="@+id/imageViewBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/baseline_arrow_back_30"
-        app:layout_constraintBottom_toBottomOf="@+id/materialToolbar2"
-        app:layout_constraintStart_toStartOf="@+id/materialToolbar2"
-        app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_page"
+        android:layout_marginBottom="100dp"
+        tools:context=".ui.fragment.ProductDetailPageFragment">
 
-    <ImageView
-        android:id="@+id/imageViewFavorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/baseline_favorite_border_white_30"
-        app:layout_constraintBottom_toBottomOf="@+id/materialToolbar2"
-        app:layout_constraintEnd_toEndOf="@+id/materialToolbar2"
-        app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
-
-    <ImageView
-        android:id="@+id/imageViewFood"
-        android:layout_width="300dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ayran"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar2" />
-
-    <TextView
-        android:id="@+id/textViewFoodName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Ayran"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewFood" />
-
-    <TextView
-        android:id="@+id/textViewFoodPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:text="3 ₺"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewFoodPiece"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFoodName" />
-
-    <ImageView
-        android:id="@+id/imageViewDecreasePiece"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/background_card_add"
-        android:src="@drawable/baseline_remove_30"
-        app:layout_constraintEnd_toStartOf="@+id/textViewFoodPiece"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFoodPrice" />
-
-    <ImageView
-        android:id="@+id/imageViewIncreasePiece"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/background_card_add"
-        android:src="@drawable/baseline_add_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textViewFoodPiece"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFoodPrice" />
-
-    <TextView
-        android:id="@+id/textViewFoodPiece"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:text="1"
-        android:textSize="34sp"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewIncreasePiece"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageViewDecreasePiece"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFoodPrice" />
-
-    <TextView
-        android:id="@+id/textViewTotalPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="27 ₺"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonAddToCartL"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonAddToCartL" />
-
-
-    <LinearLayout
-        android:id="@+id/buttonAddToCartL"
-        android:layout_width="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/buttonAddToCart"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/materialToolbar2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Sepete Ekle"
-            android:drawableLeft="@drawable/baseline_add_shopping_cart_24"
-            android:textSize="16sp"
-            />
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationViewAddCartLottie"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialToolbar4"
-            android:visibility="gone"
-            app:lottie_rawRes="@raw/add_cart"
-            />
-    </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Ürün Detay"
+            app:titleCentered="true"
+            app:titleTextColor="@color/white" />
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/baseline_arrow_back_30"
+            android:onClick="@{()->viewModel.imageViewBackClicked(imageViewBack)}"
+            app:layout_constraintBottom_toBottomOf="@+id/materialToolbar2"
+            app:layout_constraintStart_toStartOf="@+id/materialToolbar2"
+            app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
+
+        <ImageView
+            android:id="@+id/imageViewFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/baseline_favorite_border_white_30"
+            app:layout_constraintBottom_toBottomOf="@+id/materialToolbar2"
+            app:layout_constraintEnd_toEndOf="@+id/materialToolbar2"
+            app:layout_constraintTop_toTopOf="@+id/materialToolbar2" />
+
+        <ImageView
+            android:id="@+id/imageViewFood"
+            android:layout_width="300dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ayran"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialToolbar2" />
+
+        <TextView
+            android:id="@+id/textViewFoodName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@{food.yemek_adi}"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewFood" />
+
+        <TextView
+            android:id="@+id/textViewFoodPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:text='@{food.yemek_fiyat + " ₺" }'
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewFoodPiece"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFoodName" />
+
+        <ImageView
+            android:id="@+id/imageViewDecreasePiece"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_card_add"
+            android:src="@drawable/baseline_remove_30"
+            android:onClick="@{()-> viewModel.imageViewDecreasePieceClicked(food,imageViewDecreasePiece)}"
+            app:layout_constraintEnd_toStartOf="@+id/textViewFoodPiece"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFoodPrice" />
+
+        <ImageView
+            android:id="@+id/imageViewIncreasePiece"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_card_add"
+            android:src="@drawable/baseline_add_24"
+            android:onClick="@{()->viewModel.imageViewIncreasePieceClicked(food)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textViewFoodPiece"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFoodPrice" />
+
+        <TextView
+            android:id="@+id/textViewFoodPiece"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:text="@{viewModel.piece != null ? viewModel.piece.toString() : '1'}"
+            android:textSize="34sp"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewIncreasePiece"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageViewDecreasePiece"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFoodPrice" />
+
+        <TextView
+            android:id="@+id/textViewTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text='@{viewModel.totalPrice.toString() + " ₺"}'
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonAddToCartL"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/buttonAddToCartL" />
 
 
+        <LinearLayout
+            android:id="@+id/buttonAddToCartL"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/buttonAddToCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Sepete Ekle"
+                android:onClick="@{()->viewModel.buttonAddToCartClicked(food,viewModel.totalPrice,viewModel.piece,animationViewAddCartLottie,buttonAddToCart)}"
+                android:drawableLeft="@drawable/baseline_add_shopping_cart_24"
+                android:textSize="16sp" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationViewAddCartLottie"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialToolbar4"
+                android:visibility="gone"
+                app:lottie_rawRes="@raw/add_cart" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

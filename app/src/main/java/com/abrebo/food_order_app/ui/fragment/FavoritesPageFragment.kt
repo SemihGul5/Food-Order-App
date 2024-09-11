@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.abrebo.food_order_app.R
 import com.abrebo.food_order_app.data.model.Foods
@@ -26,7 +27,7 @@ class FavoritesPageFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding=FragmentFavoritesPageBinding.inflate(inflater, container, false)
+        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_favorites_page, container, false)
 
 
         viewModel.favFoodList.observe(viewLifecycleOwner){
@@ -37,15 +38,7 @@ class FavoritesPageFragment : Fragment() {
                 val adapter=FoodsAdapter(requireContext(),it,viewModel,it)
                 binding.recyclerViewFavorites.adapter=adapter
             }
-
-
         }
-
-
-
-
-
-
 
         return binding.root
     }
