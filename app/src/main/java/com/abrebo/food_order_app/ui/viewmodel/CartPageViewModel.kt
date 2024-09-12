@@ -24,6 +24,7 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
     var cartFoodList= MutableLiveData<List<CartFood>>()
     var totalPrice=MutableLiveData<Int>()
     var isCartEmpty = MutableLiveData<Boolean>()
+    var cartFoodList2=ArrayList<CartFood>()
     var idList=ArrayList<Int>()
 
     init {
@@ -46,16 +47,15 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
 
         }
     }
-    fun deleteFoodFromCart(yemekAdi:String, kullaniciAdi: String){
+    fun deleteFoodFromCart(yemekAdi: String, kullaniciAdi: String) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                cartFoodList.value?.forEach {
+                cartFoodList2.forEach {
                     if (it.yemek_adi==yemekAdi){
-                        idList.forEach {
-                            repository.deleteFoodFromCart(it,kullaniciAdi)
-                        }
+                        repository.deleteFoodFromCart(it.sepet_yemek_id,kullaniciAdi)
                     }
                 }
+
                 getFoodInTheCart()
             }catch (e:Exception){
                 cartFoodList.value= listOf()
@@ -64,6 +64,7 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
             }
         }
     }
+
 
     fun deleteAllFoodFromCart(kullaniciAdi: String){
         CoroutineScope(Dispatchers.Main).launch {
@@ -117,7 +118,10 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
     fun processCartFoodList(foodList: List<CartFood>) {
         isCartEmpty.value = false
         val foodMap = mutableMapOf<String, CartFood>()
+        cartFoodList2.clear()
+        idList.clear()
         for (food in foodList) {
+            cartFoodList2.add(food)
             idList.add(food.sepet_yemek_id)
             val currentFood = foodMap[food.yemek_adi]
             if (currentFood != null) {

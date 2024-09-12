@@ -42,7 +42,7 @@ class CartAdapter(var mContext:Context,var foods:List<CartFood>, var viewModel:C
                 .setActionTextColor(Color.WHITE)
                 .setAction("Evet") {
                     viewModel.deleteFoodFromCart(food.yemek_adi, "semih_gul")
-                    Toast.makeText(mContext,"${food.sepet_yemek_id} ${food.yemek_siparis_adet} adet ${food.yemek_adi} silindi",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(mContext,"${food.yemek_siparis_adet} adet ${food.yemek_adi} silindi",Toast.LENGTH_SHORT).show()
                 }
                 .show()
         }
