@@ -27,6 +27,7 @@ class Datasource(var foodsDao: FoodsDao, var roomFoodsDao: RoomFoodsDao) {
         foodsDao.deleteFoodFromCart(sepetYemekId, kullaniciAdi)
     }
 
+
     suspend fun search(word:String): List<Foods> = withContext(Dispatchers.IO){
         val searchList= foodsDao.foodUpload().yemekler.filter {
             it.yemek_adi

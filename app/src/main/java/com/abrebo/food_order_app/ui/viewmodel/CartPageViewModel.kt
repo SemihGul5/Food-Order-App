@@ -1,12 +1,14 @@
 package com.abrebo.food_order_app.ui.viewmodel
 
 import android.animation.Animator
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.abrebo.food_order_app.R
 import com.abrebo.food_order_app.data.model.CartFood
+import com.abrebo.food_order_app.data.model.Foods
 import com.abrebo.food_order_app.data.repo.Repository
 import com.abrebo.food_order_app.util.switch
 import com.airbnb.lottie.LottieAnimationView
@@ -14,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,8 +24,7 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
     var cartFoodList= MutableLiveData<List<CartFood>>()
     var totalPrice=MutableLiveData<Int>()
     var isCartEmpty = MutableLiveData<Boolean>()
-
-
+    var idList=ArrayList<Int>()
 
     init {
         getFoodInTheCart()
@@ -44,30 +46,32 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
 
         }
     }
-    fun deleteFoodFromCart(yemekAdi:String,kullaniciAdi: String){
+    fun deleteFoodFromCart(yemekAdi:String, kullaniciAdi: String){
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 cartFoodList.value?.forEach {
                     if (it.yemek_adi==yemekAdi){
-                        repository.deleteFoodFromCart(it.sepet_yemek_id, kullaniciAdi)
-                        calcTotalPrice()
+                        idList.forEach {
+                            repository.deleteFoodFromCart(it,kullaniciAdi)
+                        }
                     }
                 }
                 getFoodInTheCart()
-
             }catch (e:Exception){
                 cartFoodList.value= listOf()
                 totalPrice.value=0
                 isCartEmpty.value=true
             }
-
         }
     }
+
     fun deleteAllFoodFromCart(kullaniciAdi: String){
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 cartFoodList.value?.forEach {
-                    repository.deleteFoodFromCart(it.sepet_yemek_id,kullaniciAdi)
+                    idList.forEach {
+                        repository.deleteFoodFromCart(it,kullaniciAdi)
+                    }
                 }
                 getFoodInTheCart()
             }catch (e:Exception){
@@ -114,10 +118,12 @@ class CartPageViewModel @Inject constructor(var repository: Repository) :ViewMod
         isCartEmpty.value = false
         val foodMap = mutableMapOf<String, CartFood>()
         for (food in foodList) {
+            idList.add(food.sepet_yemek_id)
             val currentFood = foodMap[food.yemek_adi]
             if (currentFood != null) {
                 currentFood.yemek_siparis_adet += food.yemek_siparis_adet
                 currentFood.yemek_fiyat += food.yemek_fiyat
+
             } else {
                 foodMap[food.yemek_adi] = CartFood(
                     food.sepet_yemek_id,
